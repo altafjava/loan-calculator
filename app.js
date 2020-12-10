@@ -1,5 +1,10 @@
 const form = document.getElementById('loan-form');
-form.addEventListener('submit', calculate);
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  setTimeout(calculate, 2000);
+});
 
 function calculate(e) {
   const amount = document.getElementById('amount');
@@ -21,12 +26,15 @@ function calculate(e) {
     principalAmount.value = principal;
     interestAmount.value = (emiAmount * calculatedPayments - principal).toFixed(2);
     totalAmount.value = (emiAmount * calculatedPayments).toFixed(2);
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('loading').style.display = 'none';
   } else {
     showError('Please check your input');
   }
-  e.preventDefault();
 }
 function showError(error) {
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('loading').style.display = 'none';
   const errorDiv = document.createElement('div');
   errorDiv.className = 'alert alert-danger';
   errorDiv.appendChild(document.createTextNode(error));
@@ -35,5 +43,5 @@ function showError(error) {
   card.insertBefore(errorDiv, heading);
   setTimeout(function () {
     document.querySelector('.alert').remove();
-  }, 3000);
+  }, 2000);
 }
